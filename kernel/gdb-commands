@@ -1,0 +1,10 @@
+/home/harshit/teamOS/kernel1/kernel/main/gdt.gdb
+/home/harshit/teamOS/kernel1/kernel/mm/pagetable.gdb
+/home/harshit/teamOS/kernel1/kernel/mm/page.py
+/home/harshit/teamOS/kernel1/kernel/mm/memcheck.py
+/home/harshit/teamOS/kernel1/kernel/mm/slab.py
+/home/harshit/teamOS/kernel1/kernel/proc/kthread.gdb
+/home/harshit/teamOS/kernel1/kernel/proc/proc.py
+/home/harshit/teamOS/kernel1/kernel/util/debug.py
+/home/harshit/teamOS/kernel1/kernel/util/list.py
+/home/harshit/teamOS/kernel1/kernel/vm/vmmap.gdb
