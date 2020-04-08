@@ -1,2 +1,1 @@
-# Weenix-OS
-Kernel Implementation
+
