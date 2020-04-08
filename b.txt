@@ -1,0 +1,28 @@
+/usr/bin/qemu-system-i386
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "i686-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from kernel/weenix.dbg...done.
+0xc0006c0d in kmain () at main/kmain.c:155
+155	        while (gdb_wait) ;
+Breakpoint 1 at 0xc000bffc: file util/debug.c, line 190.
+Breakpoint 2 at 0xc0006c8e: file main/kmain.c, line 170.
+Breakpoint 3 at 0xc0006ca0: file main/kmain.c, line 192.
+
+Breakpoint 3, bootstrap (arg1=0, arg2=0x0) at main/kmain.c:192
+192	        dbgq(DBG_TEST, "SIGNATURE: 53616c7465645f5f3b649a272dfaebbdafaa3df780f9759117a3c9657eb93640e69376d3bf856e1afa45711c318e8330\n");
+(gdb) c
+Continuing.
+Error detected on fd 8
+(gdb) [H[2J(gdb) (gdb) [H[2J(gdb) q
