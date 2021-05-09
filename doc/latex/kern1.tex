@@ -3,7 +3,7 @@
 
 \section{Introduction}
 
-This assignment, colloquially referred to as ``Kernel 1,'' will provide the basic building blocks for the Weenix operating system: threads, processes, and synchronization primitives. These objects are implemented fully in kernel code, and interactions with user-level processes and threads will not be possible until you implement virtual memory in a later assignment.
+This assignment, colloquially referred to as ``Kernel 1,'' will provide the basic building blocks for the Wenix operating system: threads, processes, and synchronization primitives. These objects are implemented fully in kernel code, and interactions with user-level processes and threads will not be possible until you implement virtual memory in a later assignment.
 
 Writing an operating system can be complicated, so much of the code to do basic kernel operations such as memory allocation and page table management has already been written. These are either beyond the scope of the project or are too time consuming for too little value. While modifications to the support code are fully possible, significant changes to the provided interfaces make errors far more likely and make it harder to ask for help. However, it is important for you to be able to take ownership of the code. Though it is usually too time-consuming to write the entire system from scratch, by the end of the project, you should have a good (if high-level) understanding of all the code involved. This will certainly be true by VM, which will involve putting the final touches on the kernel.
 
@@ -23,10 +23,10 @@ The idle process performs further initialization and starts the init process. Fo
 
 \section{Processes and Threads}
 
-Weenix is capable of running multiple processes and threads. There are a few important things to note about the Weenix threading model.
+Wenix is capable of running multiple processes and threads. There are a few important things to note about the Wenix threading model.
 \begin{itemize}
-    \item There is no kernel mode preemption in Weenix (all threads run until they explicitly yield control of the processor). It is possible (but not required) to implement user mode preemption. Think about why this is much easier to do.
-    \item Weenix is only running on one processor, so synchronization primitives don't require atomic compare-and-swap instructions or memory barriers.
+    \item There is no kernel mode preemption in Wenix (all threads run until they explicitly yield control of the processor). It is possible (but not required) to implement user mode preemption. Think about why this is much easier to do.
+    \item Wenix is only running on one processor, so synchronization primitives don't require atomic compare-and-swap instructions or memory barriers.
     \item Each process only has one thread associated with it, however the threading code is actually structured so that it would be easy to have multiple threads per process. For example, each process keeps a list of its threads, even though that list currently never has more than one entry. If a function seems unnecessary to you, think of it in the context of multiple threads per process. For instance, when exiting a thread, you must alert the process that one of its threads exited, even though each process should only ever have one thread.
      \item Think of a process as a collection of some number of threads and some metadata. Killing a process is equivalent to killing its threads and vice-versa.
 \end{itemize}
@@ -35,13 +35,13 @@ The lifecycle of threads and processes is relatively straightforward. When a pro
 
 Once all its threads have exited, a process can exit and one of its ancestors (either its parent or the init process) will call \texttt{do\_waitpid()} and clean it up fully. The reason for this somewhat odd deallocation system is that some elements of the process and thread data structures can only be cleaned up from another thread's context. During this assignment, you should determine what these items are, and clean up everything else in the process as quickly as possible. Also note that processes which are children of the idle process will not be cleaned up using this method; they are dealt with separately.
 
-As a side note, you will be using linked lists extensively throughout Weenix. By this point, you may have looked at the code and seen that some data structures contain list objects or link objects. We provide you with a circular doubly-linked list implementation where the links are stored inside of the objects that are in the list (hence the link fields inside the objects). Most of this list implementation is provided as a set of macros which can be found in the codebase. You even get a couple of neat list iteration ``primitives'' that look like they're straight out of your favorite scripting language!
+As a side note, you will be using linked lists extensively throughout Wenix. By this point, you may have looked at the code and seen that some data structures contain list objects or link objects. We provide you with a circular doubly-linked list implementation where the links are stored inside of the objects that are in the list (hence the link fields inside the objects). Most of this list implementation is provided as a set of macros which can be found in the codebase. You even get a couple of neat list iteration ``primitives'' that look like they're straight out of your favorite scripting language!
 
 The trickiest parts of this segment are \texttt{do\_waitpid()} and \texttt{proc\_kill\_all()}, not because they are conceptually difficult, but because it is very easy to accidentally introduce bugs that you will discover much later. As such, you should test the edge cases of these functions early and often throughout the development of your operating system.
 
 \section{Scheduler}
 
-Once you have created processes and threads, you will need a way to run these threads and switch between them. In most operating systems, you must worry about thread priorities or quality of service assurances, which requires wait queue as well as run queue optimizations, but the scheduler for Weenix consists only of first-in-first-out queues, a function to switch between the contexts of two threads, and a few higher-level functions to abstract away the details of the queues from the caller.
+Once you have created processes and threads, you will need a way to run these threads and switch between them. In most operating systems, you must worry about thread priorities or quality of service assurances, which requires wait queue as well as run queue optimizations, but the scheduler for Wenix consists only of first-in-first-out queues, a function to switch between the contexts of two threads, and a few higher-level functions to abstract away the details of the queues from the caller.
 
 In particular, there is a single run queue from which threads are dequeued (only when the running thread yields control explicitly) and switched onto the processor. There are also many wait queues in the system, most of which will be used as a part of some mutex. When a thread reaches the front of its wait queue, it can be woken up, which involves putting it on the run queue, waiting for it to reach the head of the run queue, and then being switched onto the processor by some other thread running the switching routine.
 
@@ -51,7 +51,7 @@ Switching between threads is the most tricky code to write in this area, and sho
 
 \section{Synchronization Primitives}
 
-Since the kernel is multi-threaded, we need some way to ensure that certain critical paths are not executed simultaneously by multiple threads. Once your scheduling functions work, you should be able to implement synchronization primitives as well. The only synchronization primitive used in Weenix is the mutex, whose implementation uses a single FIFO thread queue, although you may also implement condition variables, semaphores, barriers, etc. if you wish to use them.
+Since the kernel is multi-threaded, we need some way to ensure that certain critical paths are not executed simultaneously by multiple threads. Once your scheduling functions work, you should be able to implement synchronization primitives as well. The only synchronization primitive used in Wenix is the mutex, whose implementation uses a single FIFO thread queue, although you may also implement condition variables, semaphores, barriers, etc. if you wish to use them.
 
 \section{Testing}
 

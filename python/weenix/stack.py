@@ -1,5 +1,5 @@
 import gdb
-import weenix
+import wenix
 
 class Stack:
 
@@ -8,7 +8,7 @@ class Stack:
             gdbframe = gdb.newest_frame()
         self._frames = []
         while (None != gdbframe):
-            self._frames.append(weenix.stack.Frame(gdbframe))
+            self._frames.append(wenix.stack.Frame(gdbframe))
             gdbframe = gdbframe.older()
 
     def contains(self, fname):

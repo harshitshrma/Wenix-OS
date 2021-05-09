@@ -1,6 +1,6 @@
 import gdb
-import weenix
-import weenix.list
+import wenix
+import wenix.list
 
 _proc_states = {
 	0 : "RUNNING",
@@ -32,7 +32,7 @@ class Proc:
 			return Proc(proc.dereference())
 
 	def children(self):
-		for child in weenix.list.load(self._val["p_children"], "struct proc", "p_child_link"):
+		for child in wenix.list.load(self._val["p_children"], "struct proc", "p_child_link"):
 			yield Proc(child.item())
 
 	def str_short(self):
@@ -70,11 +70,11 @@ class Proc:
 		return res
 
 def iter():
-	for link in weenix.list.load("proc_list", "struct proc", "p_list_link"):
+	for link in wenix.list.load("proc_list", "struct proc", "p_list_link"):
 		yield Proc(link.item())
 
 def lookup(pid):
-	return Proc(weenix.eval_func("proc_lookup", pid).dereference())
+	return Proc(wenix.eval_func("proc_lookup", pid).dereference())
 
 def curproc():
 	return Proc(gdb.parse_and_eval("curproc"))

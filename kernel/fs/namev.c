@@ -215,7 +215,7 @@ dir_namev(const char *pathname, size_t *namelen, const char **name,
 /* This returns in res_vnode the vnode requested by the other parameters.
  * It makes use of dir_namev and lookup to find the specified vnode (if it
  * exists).  flag is right out of the parameters to open(2); see
- * <weenix/fcntl.h>.  If the O_CREAT flag is specified and the file does
+ * <wenix/fcntl.h>.  If the O_CREAT flag is specified and the file does
  * not exist, call create() in the parent directory vnode. However, if the
  * parent directory itself does not exist, this function should fail - in all
  * cases, no files or directories other than the one at the very end of the path

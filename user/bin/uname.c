@@ -8,7 +8,7 @@
 #include <sys/utsname.h>
 #include <stdio.h>
 
-char *TAS = "weenix brought to you by:\n"
+char *TAS = "wenix brought to you by:\n"
             "1998: jal, dep, kma, mcc, cd, tor\n"
             "1999: mbe, tc, kma, mahrens, tor\n"
             "2000: ahl, mahrens, mba, pdemoreu, it\n"

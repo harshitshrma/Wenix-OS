@@ -1,27 +1,27 @@
 import gdb
 
-import weenix
-import weenix.kmem
+import wenix
+import wenix.kmem
 
-class PageCommand(weenix.Command):
+class PageCommand(wenix.Command):
 
 	def __init__(self):
-		weenix.Command.__init__(self, "page",
+		wenix.Command.__init__(self, "page",
 					gdb.COMMAND_DATA,
 					gdb.COMPLETE_NONE)
 
 	def invoke(self, args, tty):
 		total = 0
-		print("pagesize: {0}".format(weenix.kmem.pagesize()))
+		print("pagesize: {0}".format(wenix.kmem.pagesize()))
 		
 		names = list()
 		blobs = list()
 		pages = list()
 		bytes = list()
 
-		for order, count in weenix.kmem.freepages().items():
+		for order, count in wenix.kmem.freepages().items():
 			pcount = count * (1 << order)
-			bcount = pcount * weenix.kmem.pagesize()
+			bcount = pcount * wenix.kmem.pagesize()
 			names.append("freepages[{0}]:".format(order))
 			blobs.append("{0} blob{1}".format(count, " " if (count == 1) else "s"))
 			pages.append("{0} page{1}".format(pcount, " " if (pcount == 1) else "s"))
@@ -31,7 +31,7 @@ class PageCommand(weenix.Command):
 		names.append("total:")
 		blobs.append("")
 		pages.append("{0} page{1}".format(total, " " if (total == 1) else "s"))
-		bytes.append("{0} bytes".format(total * weenix.kmem.pagesize()))
+		bytes.append("{0} bytes".format(total * wenix.kmem.pagesize()))
 		
 		namewidth = max(list(map(lambda x: len(x), names)))
 		blobwidth = max(list(map(lambda x: len(x), blobs)))

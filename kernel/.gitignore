@@ -10,9 +10,9 @@ TAGS
 # kernel binaries
 kernel.bin
 symbols.dbg
-weenix.dbg
-weenix.img
-weenix.iso
+wenix.dbg
+wenix.img
+wenix.iso
 .iso/*
 
 gdb-commands

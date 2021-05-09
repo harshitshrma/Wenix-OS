@@ -1,6 +1,6 @@
-# Weenix-OS
+# Wenix-OS
 
-This file contains quick instructions for getting Weenix to run on
+This file contains quick instructions for getting Wenix to run on
 Redhat-derived or Debian-derived Linux flavors.  See the documentation in doc/
 for detailed instructions.
 
@@ -14,14 +14,14 @@ for detailed instructions.
 
    $ sudo yum install git-core gcc gdb qemu genisoimage make python python-argparse cscope xterm bash grub2-tools xorriso
 
-2. Compile Weenix:
+2. Compile Wenix:
 
    $ make
 
-3. Invoke Weenix:
+3. Invoke Wenix:
 
-   $ ./weenix -n
+   $ ./wenix -n
 
-   or, to run Weenix under gdb, run:
+   or, to run Wenix under gdb, run:
 
-   $ ./weenix -n -d gdb
+   $ ./wenix -n -d gdb

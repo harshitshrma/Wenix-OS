@@ -1,9 +1,9 @@
 import gdb
 
-import weenix
-import weenix.list
+import wenix
+import wenix.list
 
-class ListCommand(weenix.Command):
+class ListCommand(wenix.Command):
     """usage: list <list> [<type> <member>]
 	<list>   the list_t to be printed
 	<type>   the type of the values stored on the list
@@ -13,17 +13,17 @@ class ListCommand(weenix.Command):
 	are printed assuming that they have the given type."""
 
     def __init__(self):
-        weenix.Command.__init__(self, "list",
+        wenix.Command.__init__(self, "list",
                                 gdb.COMMAND_DATA,
                                 gdb.COMPLETE_SYMBOL)
 
     def invoke(self, arg, tty):
         args = gdb.string_to_argv(arg)
         if (len(args) == 1):
-            for i, item in enumerate(weenix.list.load(args[0])):
+            for i, item in enumerate(wenix.list.load(args[0])):
                 gdb.write("{0:>3}: {1:8}\n".format(i, item.link_addr()))
         elif (len(args) == 3):
-            for i, item in enumerate(weenix.list.load(args[0], args[1], args[2])):
+            for i, item in enumerate(wenix.list.load(args[0], args[1], args[2])):
                 gdb.write("{0:>3}: {1}\n".format(i, item.item()))
         else:
             gdb.write("{0}\n".format(self.__doc__))

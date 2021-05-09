@@ -35,7 +35,7 @@ void _ldainit(unsigned long pagesize, unsigned long pages)
         start = (unsigned long)mmap(NULL, amount, PROT_READ | PROT_WRITE,
                                     MAP_PRIVATE | MAP_ANON, -1, 0);
         if (start == (unsigned long) MAP_FAILED) {
-                fprintf(stderr, "ld-weenix: panic - unable to map /dev/zero\n");
+                fprintf(stderr, "ld-wenix: panic - unable to map /dev/zero\n");
                 exit(1);
         }
 }

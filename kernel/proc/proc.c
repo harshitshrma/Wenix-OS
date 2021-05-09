@@ -330,7 +330,7 @@ proc_cleanup(int status)
  * Calling this on the current process is equivalent to calling
  * do_exit().
  *
- * In Weenix, this is only called from proc_kill_all.
+ * In Wenix, this is only called from proc_kill_all.
  */
 void
 proc_kill(proc_t *p, int status)
@@ -363,7 +363,7 @@ proc_kill(proc_t *p, int status)
  * Remember, proc_kill on the current process will _NOT_ return.
  * Don't kill direct children of the idle process.
  *
- * In Weenix, this is only called by sys_halt.
+ * In Wenix, this is only called by sys_halt.
  */
 void
 proc_kill_all()

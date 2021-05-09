@@ -677,7 +677,7 @@ class FsmakerShell(cmd.Cmd):
             return False
 
 _parser = optparse.OptionParser(usage="usage: %prog <simdisk> [options]", add_help_option=False,
-                                description="command line tool to manipulate S5FS simdisks for Weenix")
+                                description="command line tool to manipulate S5FS simdisks for Wenix")
 _parser.add_option("-e", "--execute", action="append", default=[], metavar="COMMAND",
                    help="Executes the given command on the simdisk. This flag can be used multiple times, the commands will be executed "
                    "in the order they appear on the command line. To see a list of commands use the -h flag. For information on a "

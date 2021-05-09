@@ -305,7 +305,7 @@ do_dup2(int ofd, int nfd)
  * This routine creates a special file of the type specified by 'mode' at
  * the location specified by 'path'. 'mode' should be one of S_IFCHR or
  * S_IFBLK (you might note that mknod(2) normally allows one to create
- * regular files as well-- for simplicity this is not the case in Weenix).
+ * regular files as well-- for simplicity this is not the case in Wenix).
  * 'devid', as you might expect, is the device identifier of the device
  * that the new special file should represent.
  *
@@ -834,7 +834,7 @@ do_stat(const char *path, struct stat *buf)
 #ifdef __MOUNTING__
 /*
  * Implementing this function is not required and strongly discouraged unless
- * you are absolutely sure your Weenix is perfect.
+ * you are absolutely sure your Wenix is perfect.
  *
  * This is the syscall entry point into vfs for mounting. You will need to
  * create the fs_t struct and populate its fs_dev and fs_type fields before
@@ -857,7 +857,7 @@ do_mount(const char *source, const char *target, const char *type)
 
 /*
  * Implementing this function is not required and strongly discouraged unless
- * you are absolutley sure your Weenix is perfect.
+ * you are absolutley sure your Wenix is perfect.
  *
  * This function delegates all of the real work to vfs_umount. You should not worry
  * about freeing the fs_t struct here, that is done in vfs_umount. All this function

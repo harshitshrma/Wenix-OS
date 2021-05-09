@@ -2,7 +2,7 @@
 
 #include "sys/types.h"
 #include "stddef.h"
-#include "weenix/syscall.h"
+#include "wenix/syscall.h"
 #include "errno.h"
 
 #define TRAP_INTR_STRING QUOTE(INTR_SYSCALL)

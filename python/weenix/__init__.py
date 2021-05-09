@@ -1,88 +1,88 @@
 import gdb
 
-import weenix.stack
+import wenix.stack
 
-_weenix_command_prefix = "kernel"
-_weenix_command_names = list()
+_wenix_command_prefix = "kernel"
+_wenix_command_names = list()
 
-class WeenixPrefixCommand(gdb.Command):
+class WenixPrefixCommand(gdb.Command):
 
     def __init__(self):
-        gdb.Command.__init__(self, _weenix_command_prefix, gdb.COMMAND_DATA, gdb.COMPLETE_COMMAND, True)
+        gdb.Command.__init__(self, _wenix_command_prefix, gdb.COMMAND_DATA, gdb.COMPLETE_COMMAND, True)
 
     def invoke(self, arg, tty):
         if (len(arg) != 0):
-            print("'{0}' is not a valid {1} command".format(arg, _weenix_command_prefix))
-        print("valid {0} commands are:".format(_weenix_command_prefix))
-        for command in _weenix_command_names:
+            print("'{0}' is not a valid {1} command".format(arg, _wenix_command_prefix))
+        print("valid {0} commands are:".format(_wenix_command_prefix))
+        for command in _wenix_command_names:
             print("  {0}".format(command))
-        print("run 'help {0} <command>' for details on a particular command".format(_weenix_command_prefix))
+        print("run 'help {0} <command>' for details on a particular command".format(_wenix_command_prefix))
 
-WeenixPrefixCommand()
+WenixPrefixCommand()
 
 class Command(gdb.Command):
 
     def __init__(self, name, command_class, completer_class=None, prefix=False):
         if (len(name.split()) == 1):
-            _weenix_command_names.append(name)
-            _weenix_command_names.sort()
-        name = "{0} {1}".format(_weenix_command_prefix, name)
+            _wenix_command_names.append(name)
+            _wenix_command_names.sort()
+        name = "{0} {1}".format(_wenix_command_prefix, name)
         if (completer_class == None):
             gdb.Command.__init__(self, name, command_class, prefix=prefix)
         else:
             gdb.Command.__init__(self, name, command_class, completer_class, prefix=prefix)
 
-_weenix_param_names = list()
+_wenix_param_names = list()
 
-class WeenixSetPrefixCommand(gdb.Command):
+class WenixSetPrefixCommand(gdb.Command):
 
     def __init__(self):
-        gdb.Command.__init__(self, "set " + _weenix_command_prefix, gdb.COMMAND_DATA, gdb.COMPLETE_COMMAND, True)
+        gdb.Command.__init__(self, "set " + _wenix_command_prefix, gdb.COMMAND_DATA, gdb.COMPLETE_COMMAND, True)
 
     def invoke(self, arg, tty):
         if (len(arg) != 0):
-            print("'{0}' is not a valid {1} parameter".format(arg, _weenix_command_prefix))
-        print("valid {0} parameters are:".format(_weenix_command_prefix))
-        for param in _weenix_param_names:
+            print("'{0}' is not a valid {1} parameter".format(arg, _wenix_command_prefix))
+        print("valid {0} parameters are:".format(_wenix_command_prefix))
+        for param in _wenix_param_names:
             print("  {0}".format(param))
-        print("run 'help {0} <param>' for details on a particular parameter".format(_weenix_command_prefix))
+        print("run 'help {0} <param>' for details on a particular parameter".format(_wenix_command_prefix))
 
-WeenixSetPrefixCommand()
+WenixSetPrefixCommand()
 
-class WeenixShowPrefixCommand(gdb.Command):
+class WenixShowPrefixCommand(gdb.Command):
 
     def __init__(self):
-        gdb.Command.__init__(self, "show " + _weenix_command_prefix, gdb.COMMAND_DATA, gdb.COMPLETE_COMMAND, True)
+        gdb.Command.__init__(self, "show " + _wenix_command_prefix, gdb.COMMAND_DATA, gdb.COMPLETE_COMMAND, True)
 
     def invoke(self, arg, tty):
         if (len(arg) != 0):
-            print("'{0}' is not a valid {1} parameter".format(arg, _weenix_command_prefix))
-        print("valid {0} parameters are:".format(_weenix_command_prefix))
-        for param in _weenix_param_names:
+            print("'{0}' is not a valid {1} parameter".format(arg, _wenix_command_prefix))
+        print("valid {0} parameters are:".format(_wenix_command_prefix))
+        for param in _wenix_param_names:
             print("  {0}".format(param))
-        print("run 'help {0} <param>' for details on a particular parameter".format(_weenix_command_prefix))
+        print("run 'help {0} <param>' for details on a particular parameter".format(_wenix_command_prefix))
 
-WeenixShowPrefixCommand()
+WenixShowPrefixCommand()
 
 class Parameter(gdb.Parameter):
 
     def __init__(self, name, command_class, parameter_class, enum=None):
-        _weenix_param_names.append(name)
-        _weenix_param_names.sort()
-        name = "{0} {1}".format(_weenix_command_prefix, name)
+        _wenix_param_names.append(name)
+        _wenix_param_names.sort()
+        name = "{0} {1}".format(_wenix_command_prefix, name)
         if (None == enum):
             gdb.Parameter.__init__(self, name, command_class, parameter_class)
         else:
             gdb.Parameter.__init__(self, name, command_class, parameter_class, enum)
 
-class Flag(weenix.Parameter):
+class Flag(wenix.Parameter):
 
     def __init__(self, name, command_class, default=False):
         self._name = name
         self.value = default
         self._final = None
-        weenix.Parameter.__init__(self, name, command_class, gdb.PARAM_BOOLEAN)
-        weenix.Hook("boot", self.boot_callback)
+        wenix.Parameter.__init__(self, name, command_class, gdb.PARAM_BOOLEAN)
+        wenix.Hook("boot", self.boot_callback)
 
     def boot_callback(self, args):
         self._final = self.value
@@ -96,12 +96,12 @@ class Flag(weenix.Parameter):
             return "{0} is {1}".format(self._name, "enabled" if self.value else "disabled")
         else:
             self.value = self._final
-            return "{0} parameter cannot be changed once Weenix has booted".format(self._name)
+            return "{0} parameter cannot be changed once Wenix has booted".format(self._name)
 
     def get_show_string(self, value):
         return "{0} is {1}".format(self._name, value)
 
-class WeenixError(gdb.GdbError):
+class WenixError(gdb.GdbError):
 
     def __init__(self, msg):
         self.__msg = msg
@@ -116,11 +116,11 @@ class Hook(gdb.Breakpoint):
         self.callback = callback
 
     def stop(self):
-        frame = weenix.stack.Frame(gdb.newest_frame())
+        frame = wenix.stack.Frame(gdb.newest_frame())
         self.callback(frame.args())
         return False
 
-class TypeError(WeenixError):
+class TypeError(WenixError):
 
     def __init__(self, actual, expected, name=None):
         self.actual = actual
@@ -135,7 +135,7 @@ class TypeError(WeenixError):
         else:
             name = "'{0}'".format(name)
 
-        WeenixError.__init__(
+        WenixError.__init__(
             self, "{0} has type '{1}', expected '{2}'{3}"
             .format(name, actual, expected, clarification))
 
@@ -145,7 +145,7 @@ def assert_type(value, expected, unqualified=True):
             name = value
             actual = gdb.parse_and_eval(value).type
         except RuntimeError as err:
-            raise WeenixError(str(err))
+            raise WenixError(str(err))
     elif (type(value) == gdb.Value):
         name = None
         actual = value.type
@@ -188,11 +188,11 @@ class EvalFunctionHelper(gdb.Function):
         del self._vals[int(index)]
         return val
 
-_weenix_eval_func_helper = EvalFunctionHelper()
+_wenix_eval_func_helper = EvalFunctionHelper()
 
 def value_to_string(value):
-    index = _weenix_eval_func_helper.register(value)
-    return "${0}({1})".format(_weenix_eval_func_helper.name(), index)
+    index = _wenix_eval_func_helper.register(value)
+    return "${0}({1})".format(_wenix_eval_func_helper.name(), index)
 
 def eval_func(name, *args):
     argstr = ""

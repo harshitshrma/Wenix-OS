@@ -16,8 +16,8 @@ USAGE="Usage: $0 [OPTION]...
 # XXX hardcoding these temporarily -- should be read from the makefiles
 GDB_TMP_INIT=inittmp.gdb
 KERN_DIR=kernel
-ISO_IMAGE=weenix.iso
-SYMBOLS=weenix.dbg
+ISO_IMAGE=wenix.iso
+SYMBOLS=wenix.dbg
 GDB_COMM_INIT=commands.gdb
 GDB_INIT=init.gdb
 GDB_MEMCHECK=memcheck.gdb
@@ -91,9 +91,9 @@ do
 done
 #
 # The above 4 lines will enable "kernel" gdb commands (try "help kernel" in gdb).
-# If you get "No module named weenix" error when you start weenix with gdb, you should do:
+# If you get "No module named wenix" error when you start wenix with gdb, you should do:
 #
-#     pushd python; tar cvf - weenix | (cd /usr/share/gdb/python; sudo tar xvf -); popd
+#     pushd python; tar cvf - wenix | (cd /usr/share/gdb/python; sudo tar xvf -); popd
 #
 
 case $machine in

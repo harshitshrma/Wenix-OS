@@ -2470,7 +2470,7 @@
 [0m[0mproc/proc.c:465 do_waitpid(): (GRADING1A 2.c)
 [0m[0mproc/proc.c:479 do_waitpid(): (GRADING1A 2.c)
 [0m[0mproc/proc.c:482 do_waitpid(): (GRADING1C)
-[0mweenix: vfs shutdown...
+[0mwenix: vfs shutdown...
 [0mproc/kmutex.c:53 kmutex_lock(): (GRADING1A 6.a)
 [0m[0mproc/kmutex.c:60 kmutex_lock(): (GRADING1C)
 [0m[0mmm/pframe.c:383 pframe_get(): (GRADING3B 1)
@@ -4401,4 +4401,4 @@
 [0m[0mproc/proc.c:479 do_waitpid(): (GRADING1A 2.c)
 [0m[0mproc/proc.c:482 do_waitpid(): (GRADING1C)
 [0m
-weenix: halted cleanly!
+wenix: halted cleanly!

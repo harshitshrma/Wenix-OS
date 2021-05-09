@@ -2,9 +2,9 @@ import gdb
 
 import string
 
-import weenix
-import weenix.kmem
-import weenix.stack
+import wenix
+import wenix.kmem
+import wenix.stack
 
 class SlabAllocation:
 
@@ -35,19 +35,19 @@ class Memcheck:
         self._page_invalid_free = 0
         self._page_allocated = {}
         self._initialized = False
-        weenix.Hook("slab_obj_alloc", self._slab_alloc_callback)
-        weenix.Hook("slab_obj_free", self._slab_free_callback)
-        weenix.Hook("page_alloc", self._page_alloc_callback)
-        weenix.Hook("page_free", self._page_free_callback)
-        weenix.Hook("initialized", self._initialized_callback)
-        weenix.Hook("shutdown", self._shutdown_callback)
+        wenix.Hook("slab_obj_alloc", self._slab_alloc_callback)
+        wenix.Hook("slab_obj_free", self._slab_free_callback)
+        wenix.Hook("page_alloc", self._page_alloc_callback)
+        wenix.Hook("page_free", self._page_free_callback)
+        wenix.Hook("initialized", self._initialized_callback)
+        wenix.Hook("shutdown", self._shutdown_callback)
 
     def _slab_alloc_callback(self, args):
         addr = args["addr"]
         if string.atol(addr, 16) == 0:
             return False
-        stack = weenix.stack.Stack(gdb.newest_frame().older())
-        allocator = weenix.kmem.SlabAllocator(gdb.Value(string.atol(args["allocator"].split(' ')[0], 16)).cast(gdb.lookup_type("void").pointer()))
+        stack = wenix.stack.Stack(gdb.newest_frame().older())
+        allocator = wenix.kmem.SlabAllocator(gdb.Value(string.atol(args["allocator"].split(' ')[0], 16)).cast(gdb.lookup_type("void").pointer()))
         self._slab_allocated[addr] = SlabAllocation(addr, stack, allocator, not self._initialized)
         if (self._initialized):
             self._slab_alloc_count += 1
@@ -57,7 +57,7 @@ class Memcheck:
         if (not args["addr"] in self._slab_allocated):
             self._slab_invalid_free += 1
             print("Invalid free of address " + args["addr"] + ":")
-            print(weenix.stack.Stack(gdb.newest_frame().older()))
+            print(wenix.stack.Stack(gdb.newest_frame().older()))
         else:
             if (not self._slab_allocated[args["addr"]].initialization):
                 self._slab_free_count += 1
@@ -68,7 +68,7 @@ class Memcheck:
         addr = args["addr"]
         if string.atol(addr, 16) == 0:
             return False
-        stack = weenix.stack.Stack(gdb.newest_frame().older())
+        stack = wenix.stack.Stack(gdb.newest_frame().older())
         slabdata = stack.contains("_slab_allocator_grow")
         self._page_allocated[addr] = PageAllocation(addr, stack, string.atoi(args["npages"]), slabdata, not self._initialized)
         if (self._initialized and not slabdata):
@@ -79,13 +79,13 @@ class Memcheck:
         if (not args["addr"] in self._page_allocated):
             self._page_invalid_free += 1
             print("Invalid free of address " + args["addr"] + ":")
-            print(weenix.stack.Stack(gdb.newest_frame().older()))
+            print(wenix.stack.Stack(gdb.newest_frame().older()))
         elif (self._page_allocated[args["addr"]].npages != string.atoi(args["npages"])):
             self._page_invalid_free += 1
             print("Address " + args["addr"] + " allocated for " + str(self._page_allocated[args["addr"]].npages) + " pages:")
             print(self._page_allocated[args["addr"]].stack)
             print("but freed with " + args["npages"] + " pages:")
-            print(weenix.stack.Stack(gdb.newest_frame().older()))
+            print(wenix.stack.Stack(gdb.newest_frame().older()))
             del(self._page_allocated[args["addr"]])
         else:
             if (not self._page_allocated[args["addr"]].initialization and not self._page_allocated[args["addr"]].slabdata):
@@ -116,10 +116,10 @@ class Memcheck:
         print("{0} invalid page frees".format(self._page_invalid_free))
         return False
 
-class MemcheckFlag(weenix.Flag):
+class MemcheckFlag(wenix.Flag):
 
     def __init__(self):
-        weenix.Flag.__init__(self, "memcheck", gdb.COMMAND_DATA)
+        wenix.Flag.__init__(self, "memcheck", gdb.COMMAND_DATA)
 
     def callback(self, value):
         if (value):

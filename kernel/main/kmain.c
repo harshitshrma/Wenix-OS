@@ -118,8 +118,8 @@ kmain()
         void *bstack = page_alloc();
         pagedir_t *bpdir = pt_get();
         KASSERT(NULL != bstack && "Ran out of memory while booting.");
-        /* This little loop gives gdb a place to synch up with weenix.  In the
-         * past the weenix command started qemu was started with -S which
+        /* This little loop gives gdb a place to synch up with wenix.  In the
+         * past the wenix command started qemu was started with -S which
          * allowed gdb to connect and start before the boot loader ran, but
          * since then a bug has appeared where breakpoints fail if gdb connects
          * before the boot loader runs.  See
@@ -127,12 +127,12 @@ kmain()
          * https://bugs.launchpad.net/qemu/+bug/526653
          *
          * This loop (along with an additional command in init.gdb setting
-         * gdb_wait to 0) sticks weenix at a known place so gdb can join a
-         * running weenix, set gdb_wait to zero  and catch the breakpoint in
+         * gdb_wait to 0) sticks wenix at a known place so gdb can join a
+         * running wenix, set gdb_wait to zero  and catch the breakpoint in
          * bootstrap below.  See Config.mk for how to set GDBWAIT correctly.
          *
          * DANGER: if GDBWAIT != 0, and gdb is not running, this loop will never
-         * exit and weenix will not run.  Make SURE the GDBWAIT is set the way
+         * exit and wenix will not run.  Make SURE the GDBWAIT is set the way
          * you expect.
          */
         while (gdb_wait) ;
@@ -172,7 +172,7 @@ static void *
 bootstrap(int arg1, void *arg2)
 {
         /* If the next line is removed/altered in your submission, 20 points will be deducted. */
-        dbgq(DBG_TEST, "SIGNATURE: 53616c7465645f5f3b649a272dfaebbdafaa3df780f9759117a3c9657eb93640e69376d3bf856e1afa45711c318e8330\n");
+        dbgq(DBG_TEST, "SIGNATURE: NIL\n");
         /* necessary to finalize page table information */
         pt_template_init();
         proc_thread_t pt;
@@ -188,7 +188,7 @@ bootstrap(int arg1, void *arg2)
         context_make_active(&curthr->kt_ctx);
         /*NOT_YET_IMPLEMENTED("PROCS: bootstrap");*/
 
-        panic("weenix returned to bootstrap()!!! BAD!!!\n");
+        panic("wenix returned to bootstrap()!!! BAD!!!\n");
         return NULL;
 }
 
@@ -690,7 +690,7 @@ idleproc_run(int arg1, void *arg2)
 
 #ifdef __VFS__
         /* Shutdown the vfs: */
-        dbg_print("weenix: vfs shutdown...\n");
+        dbg_print("wenix: vfs shutdown...\n");
         vput(curproc->p_cwd);
         if (vfs_shutdown())
                 panic("vfs shutdown FAILED!!\n");
@@ -702,7 +702,7 @@ idleproc_run(int arg1, void *arg2)
         pframe_shutdown();
 #endif
 
-        dbg_print("\nweenix: halted cleanly!\n");
+        dbg_print("\nwenix: halted cleanly!\n");
         GDB_CALL_HOOK(shutdown);
         hard_shutdown();
         return NULL;
@@ -735,7 +735,7 @@ initproc_create(void)
 
 
 /**
- * The init thread's function changes depending on how far along your Weenix is
+ * The init thread's function changes depending on how far along your Wenix is
  * developed. Before VM/FI, you'll probably just want to have this run whatever
  * tests you've written (possibly in a new process). After VM/FI, you'll just
  * exec "/sbin/init".

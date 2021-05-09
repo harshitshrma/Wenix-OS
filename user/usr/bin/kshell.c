@@ -2,8 +2,8 @@
  * Runs the in-kernel shell.
  */
 
-#include "weenix/syscall.h"
-#include "weenix/trap.h"
+#include "wenix/syscall.h"
+#include "wenix/trap.h"
 
 int main(int argc, char **argv)
 {

@@ -133,7 +133,7 @@ n_tty_receive_char(tty_ldisc_t *ldisc, char c)
 /*
  * Process a character to be written to the screen.
  *
- * The only special case is '\r' and '\n'. Weenix needs
+ * The only special case is '\r' and '\n'. Wenix needs
  * '\r\n' to make a new line on screen.
  */
 const char *

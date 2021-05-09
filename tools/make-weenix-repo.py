@@ -109,8 +109,8 @@ def findRoot(base, max_depth=5):
     while depth < max_depth:
         filenames = os.listdir(base)
 
-        # Root for Weenix repo contains weenix and fsmaker files
-        if ("weenix" in filenames) and ("fsmaker" in filenames):
+        # Root for Wenix repo contains wenix and fsmaker files
+        if ("wenix" in filenames) and ("fsmaker" in filenames):
             root_dir = os.path.abspath(base)
             break
         base = os.path.join(base, "..")
@@ -128,9 +128,9 @@ def listModules(prefix="", modules=[]):
     sys.stdout.write(prefix)
     print(" ".join(m for m in modules))
 
-remove_files = [ "tools/make-weenix-repo.help" ]
+remove_files = [ "tools/make-wenix-repo.help" ]
 keep_files = [ "Submodules" ]
-executable_files = [ "fsmaker","weenix","tools/make-weenix-repo.py" ]
+executable_files = [ "fsmaker","wenix","tools/make-wenix-repo.py" ]
 
 remove_extensions = [ ".bin",".dbg",".files",".gdbcomm",".img",".o",".out" ]
 src_extensions = [ ".h",".c",".py" ]
@@ -181,13 +181,13 @@ def main():
     src_strip = False
     extra_strip = False
 
-    aparser = argparse.ArgumentParser(description="Weenix repository generator from support code")
-    aparser.add_argument("--list-modules", action="store_true", help="list available Weenix modules")
-    aparser.add_argument("--list-extra", action="store_true", help="list available extra Weenix features")
+    aparser = argparse.ArgumentParser(description="Wenix repository generator from support code")
+    aparser.add_argument("--list-modules", action="store_true", help="list available Wenix modules")
+    aparser.add_argument("--list-extra", action="store_true", help="list available extra Wenix features")
     aparser.add_argument("--verbose", action="store_true", help="enable verbose output mode")
-    aparser.add_argument("--binary", type=str, metavar="module_list", help="enable binary keeping for Weenix modules")
-    aparser.add_argument("--cutsource", type=str, metavar="module_list", help="enable source stripping for Weenix modules")
-    aparser.add_argument("--cutextra", type=str, metavar="extra_list", help="enable source stripping for extra Weenix features")
+    aparser.add_argument("--binary", type=str, metavar="module_list", help="enable binary keeping for Wenix modules")
+    aparser.add_argument("--cutsource", type=str, metavar="module_list", help="enable source stripping for Wenix modules")
+    aparser.add_argument("--cutextra", type=str, metavar="extra_list", help="enable source stripping for extra Wenix features")
 
     if len(sys.argv) < 2:
         aparser.print_help()
@@ -289,7 +289,7 @@ def main():
             dbgPrint("\tRemoving %s\n" % path, dbg_msg.DEBUG)
             os.remove(path)
  
-    dbgPrint("Creating student weenix git repository...\n")
+    dbgPrint("Creating student wenix git repository...\n")
     subprocess.call(["git", "init"])
 
     if src_strip:
@@ -352,7 +352,7 @@ def main():
         os.chmod(path, 0775)
 
     subprocess.call(["git", "add", "."])
-    subprocess.call(["git", "commit", "-m", "Created student weenix repository"])
+    subprocess.call(["git", "commit", "-m", "Created student wenix repository"])
     dbgPrint("DONE.\n")
 
 if __name__ == "__main__":

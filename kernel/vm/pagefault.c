@@ -24,7 +24,7 @@
  * calling function has already done a lot of error checking for
  * us. In particular it has checked that we are not page faulting
  * while in kernel mode. Make sure you understand why an
- * unexpected page fault in kernel mode is bad in Weenix. You
+ * unexpected page fault in kernel mode is bad in Wenix. You
  * should probably read the _pt_fault_handler function to get a
  * sense of what it is doing.
  *
@@ -34,7 +34,7 @@
  * permission to do [cause]. If either of these checks does not
  * pass kill the offending process, setting its exit status to
  * EFAULT (normally we would send the SIGSEGV signal, however
- * Weenix does not support signals).
+ * Wenix does not support signals).
  *
  * Now it is time to find the correct page. Make sure that if the
  * user writes to the page it will be handled correctly. This

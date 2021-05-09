@@ -1,11 +1,11 @@
 /*
- *  unistd.h - Standard Weenix System Interface
+ *  unistd.h - Standard Wenix System Interface
  */
 #pragma once
 
 #include "stdarg.h"
 #include "sys/types.h"
-#include "weenix/config.h"
+#include "wenix/config.h"
 #include "sys/stat.h"
 #include "lseek.h"
 

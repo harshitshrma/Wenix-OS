@@ -20,11 +20,11 @@ SCRIPTS   := $(foreach dr, $(SRCDIR), $(wildcard $(dr)/*.gdb $(dr)/*.py))
 # List of prebuilt modules that do not include the source
 PREBUILT  :=
 
-SYMBOLS   := weenix.dbg
+SYMBOLS   := wenix.dbg
 BSYMBOLS  := symbols.dbg
 KERNEL    := kernel.bin
-IMAGE     := weenix.img
-ISO_IMAGE := weenix.iso
+IMAGE     := wenix.img
+ISO_IMAGE := wenix.iso
 GDBCOMM   := gdb-commands
 
 .PHONY: all cscope clean
@@ -57,7 +57,7 @@ $(ISO_IMAGE): $(KERNEL)
 	@ echo "timeout=0" > .iso/boot/grub/grub.cfg
 	@ echo "menuentry \"$@\" {" >> .iso/boot/grub/grub.cfg
 	@ echo " echo \"Booting $@ from /boot/$<\" " >> .iso/boot/grub/grub.cfg
-	@ echo " echo \"Welcome To Weenix!\" " >> .iso/boot/grub/grub.cfg
+	@ echo " echo \"Welcome To Wenix!\" " >> .iso/boot/grub/grub.cfg
 	@ echo " multiboot /boot/$< " >> .iso/boot/grub/grub.cfg
 	@ echo " boot " >> .iso/boot/grub/grub.cfg
 	@ echo "}" >> .iso/boot/grub/grub.cfg

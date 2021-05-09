@@ -1,5 +1,5 @@
 import gdb
-import weenix
+import wenix
 
 _char_type = gdb.lookup_type("char")
 _list_type = gdb.lookup_type("list_t")
@@ -30,7 +30,7 @@ class Link:
 				link -= (field.bitpos // 8)
 				link = link.cast(gdb.lookup_type(typ).pointer())
 				return link.dereference()
-		raise weenix.WeenixError("no member {0} of {1}"
+		raise wenix.WenixError("no member {0} of {1}"
 								 .format(memb, typ))
 
 	def link_addr(self):
@@ -71,7 +71,7 @@ class List:
 		raise IndexError(key)
 
 def load(name, dtype=None, dmemb=None):
-	weenix.assert_type(name, _list_type)
+	wenix.assert_type(name, _list_type)
 
 	if (dtype != None):
 		try:
@@ -86,7 +86,7 @@ def load(name, dtype=None, dmemb=None):
 		for field in typ.strip_typedefs().fields():
 			if (field.name == dmemb):
 				try:
-					weenix.assert_type(field.type, _list_link_type)
+					wenix.assert_type(field.type, _list_link_type)
 				except gdb.GdbError as err:
 					raise gdb.GdbError(
 						"field '{0}' of type '{1}' has wrong type: {2}"

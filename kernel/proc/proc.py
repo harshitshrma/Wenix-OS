@@ -1,31 +1,31 @@
 import gdb
 
-import weenix
-import weenix.list
-import weenix.proc
+import wenix
+import wenix.list
+import wenix.proc
 
-class ProcCommand(weenix.Command):
+class ProcCommand(wenix.Command):
 	"""proc [<pids...>]
 	Prints information about the listed pids. If no
 	pids are listed the full process tree is printed."""
 
 	def __init__(self):
-		weenix.Command.__init__(self, "proc", gdb.COMMAND_DATA)
+		wenix.Command.__init__(self, "proc", gdb.COMMAND_DATA)
 
 	def invoke(self, args, tty):
 		print("invoking...")
 		if (len(args.strip()) == 0):
-			print(weenix.proc.str_proc_tree())
+			print(wenix.proc.str_proc_tree())
 		else:
 			for pid in args.split():
 				if (pid == "curproc"):
-					print(weenix.proc.curproc())
+					print(wenix.proc.curproc())
 				else:
-					print(weenix.proc.lookup(pid))
+					print(wenix.proc.lookup(pid))
 
 	def complete(self, line, word):
 		print("completing...")
-		l = map(lambda x: str(x.pid()), weenix.proc.iter())
+		l = map(lambda x: str(x.pid()), wenix.proc.iter())
 		l.append("curproc")
 		l = filter(lambda x: x.startswith(word), l)
 		for used in line.split():

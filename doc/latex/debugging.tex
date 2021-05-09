@@ -1,7 +1,7 @@
 \chapter{Debugging}
 \label{Debugging}
 
-As you begin to develop your kernel, you will undoubtedly find problems in the code you have written. We have collected some techniques here which we found useful or which are largely undocumented elsewhere because they are fairly advanced or are specific to working on Weenix in particular.
+As you begin to develop your kernel, you will undoubtedly find problems in the code you have written. We have collected some techniques here which we found useful or which are largely undocumented elsewhere because they are fairly advanced or are specific to working on Wenix in particular.
 
 \section{Beginning Debugging}
 
@@ -15,7 +15,7 @@ By far the easiest technique for debugging is printing things out during the exe
 #define dbgq(dbgmodes, printfargs)\end{verbatim}
 The difference between the two is that \texttt{dbg} additionally displays the file and line number information describing where the debug statement is located, but \texttt{dbgq} displays only the debugging message.
 
-Debug messages are organized into many debug modes, each of which can be separately hidden or color-coded in the debug output. You can find a list of debug modes in \texttt{kernel/include/util/debug.h}. The string names next to each mode are used to configure which debug modes are displayed (the default can be set in the Weenix configuration file and updated while Weenix is being debugged via the dbg command), and there is also a special string name which refers to all debug modes. For example:
+Debug messages are organized into many debug modes, each of which can be separately hidden or color-coded in the debug output. You can find a list of debug modes in \texttt{kernel/include/util/debug.h}. The string names next to each mode are used to configure which debug modes are displayed (the default can be set in the Wenix configuration file and updated while Wenix is being debugged via the dbg command), and there is also a special string name which refers to all debug modes. For example:
 \begin{verbatim}
 dbg(DBG_THR, "Creating a kernel thread "
              "with stack at 0x%p\n", stack);\end{verbatim}
@@ -34,7 +34,7 @@ It's not hard to add your own debugging modes, either. This is helpful if you de
 
 There are several info functions in the kernel which are provided exclusively for visualizing information in the debug console. To call one of these, use \texttt{dbginfo()}, like so:
 \begin{verbatim}dbginfo(DBG_VMMAP, vmmap_mapping_info, curproc->p_vmmap);\end{verbatim}
-You can substitute in other functions besides \texttt{vmmap\_mapping\_info} - there are a bunch of functions ending with ``\texttt{\_info}'' in Weenix which can be passed here.
+You can substitute in other functions besides \texttt{vmmap\_mapping\_info} - there are a bunch of functions ending with ``\texttt{\_info}'' in Wenix which can be passed here.
 
 \subsection{Using Assertions}
 
@@ -49,33 +49,33 @@ Because assertions are helpful for checking things that should always be true, w
 
 \section{Intermediate Debugging}
 
-Although the techniques above are very useful, it will quickly become apparent that a more robust way to debug the kernel is frequently necessary. Luckily, debuggers provide us with an excellent way to do this. \texttt{gdb} is the definitive debugger for C code on Unix systems, and the rest of this appendix will center on its usage. Most of the following information is applicable to all stages of Weenix development, except where noted.
+Although the techniques above are very useful, it will quickly become apparent that a more robust way to debug the kernel is frequently necessary. Luckily, debuggers provide us with an excellent way to do this. \texttt{gdb} is the definitive debugger for C code on Unix systems, and the rest of this appendix will center on its usage. Most of the following information is applicable to all stages of Wenix development, except where noted.
 
 \subsection{Prerequisites}
-If you have never used \texttt{gdb} before, we recommend finding \hyperref{http://www.unknownroad.com/rtfm/gdbtut/gdbtoc.html}{}{}{RMS's (Richard Stallman's) \texttt{gdb} Debugger Tutorial} online and reading it. Before you read more advanced or Weenix-specific debugging tips, make sure you can use the following \texttt{gdb} features (most important ones listed first, more specialized ones later).
+If you have never used \texttt{gdb} before, we recommend finding \hyperref{http://www.unknownroad.com/rtfm/gdbtut/gdbtoc.html}{}{}{RMS's (Richard Stallman's) \texttt{gdb} Debugger Tutorial} online and reading it. Before you read more advanced or Wenix-specific debugging tips, make sure you can use the following \texttt{gdb} features (most important ones listed first, more specialized ones later).
 \begin{itemize}
     \item Compiling with symbols.
     \item Breakpoints, stepping, continuing.
     \item Viewing and traversing the call stack.
     \item Inspecting variables.
     \item Inspecting the contents at a particular memory address.
-    \item Using watchpoints.\footnote{Watchpoints do not work with all the simulators which Weenix will run on.}
-    \item Conditional breakpoints.\footnote{Conditional breakpoints do not work with all simulators which Weenix will run on. To get similar functionality, add an \texttt{if} statement to your code with the condition you care about and set a breakpoint inside there.}
+    \item Using watchpoints.\footnote{Watchpoints do not work with all the simulators which Wenix will run on.}
+    \item Conditional breakpoints.\footnote{Conditional breakpoints do not work with all simulators which Wenix will run on. To get similar functionality, add an \texttt{if} statement to your code with the condition you care about and set a breakpoint inside there.}
     \item Inspecting the contents of registers.
 \end{itemize}
 Once you understand these basics, you should be able to debug pretty much any simple user-level program that you have the code for. However, there are a few more specific topics that are helpful in some cases.
 
 \subsection{Debugging Multiple Threads}
 
-Although this does not relate directly to Weenix, you will frequently be debugging multithreaded programs. Debugging in the presence of multiple threads is usually the same as debugging single-threaded programs, but the place where it differs is in cases like deadlock. If you are debugging a program in \texttt{gdb} and it deadlocks, you can hit \texttt{Ctrl-C} to pause the program. Then, you can inspect the stack trace as usual. If you need to check the other threads (perhaps the first one you were given wasn't the one in a deadlock, or maybe you want to see what other threads are contributing to the deadlock) you can see a list of threads using ``\texttt{info threads}'' and can switch to thread \texttt{N} by typing ``\texttt{thread N}'' (substitute the real thread number for \texttt{N} in that command).
+Although this does not relate directly to Wenix, you will frequently be debugging multithreaded programs. Debugging in the presence of multiple threads is usually the same as debugging single-threaded programs, but the place where it differs is in cases like deadlock. If you are debugging a program in \texttt{gdb} and it deadlocks, you can hit \texttt{Ctrl-C} to pause the program. Then, you can inspect the stack trace as usual. If you need to check the other threads (perhaps the first one you were given wasn't the one in a deadlock, or maybe you want to see what other threads are contributing to the deadlock) you can see a list of threads using ``\texttt{info threads}'' and can switch to thread \texttt{N} by typing ``\texttt{thread N}'' (substitute the real thread number for \texttt{N} in that command).
 
 Another note about multiple threads (particularly if you might be canceling them) is that you must be careful what calls you make during critical sections of code. For instance, if you want to ensure that a call to cancel some thread doesn't take effect until after a certain section of code is complete, there is a set of standard library calls which make system calls which might act as a cancellation point. Look in the \texttt{man} page for \texttt{pthread\_cancel()} for a list of these library calls. Note that \texttt{printf()} is one of them, so you might want to use \texttt{gdb} to debug instead of printing out messages to tell you when certain events happen.
 
-\subsection{Using the Weenix \texttt{gdb} Scripts}
+\subsection{Using the Wenix \texttt{gdb} Scripts}
 
-Because Weenix has been debugged using \texttt{gdb} for some time, there are a few Python scripts which run as custom commands inside the debugger which you can use to help debug your OS. These are all given under the command ``\texttt{kernel}'', and you can find more detailed information about the commands available by running ``\texttt{help kernel}'' inside of \texttt{gdb}, but here are a few of the highlights.
+Because Wenix has been debugged using \texttt{gdb} for some time, there are a few Python scripts which run as custom commands inside the debugger which you can use to help debug your OS. These are all given under the command ``\texttt{kernel}'', and you can find more detailed information about the commands available by running ``\texttt{help kernel}'' inside of \texttt{gdb}, but here are a few of the highlights.
 \begin{itemize}
-    \item To turn kernel memory checking on, add the line ``\texttt{set kernel memcheck on}'' to the beginning of \texttt{init.gdb}. This allows you to run \texttt{kernel page} and \texttt{kernel slab} at shutdown, which tell you how much memory has not been cleaned up. Note that turning memory checking on may slow Weenix down a little bit, and that a handful of memory segments simply cannot be freed (page tables and stacks are common culprits).
+    \item To turn kernel memory checking on, add the line ``\texttt{set kernel memcheck on}'' to the beginning of \texttt{init.gdb}. This allows you to run \texttt{kernel page} and \texttt{kernel slab} at shutdown, which tell you how much memory has not been cleaned up. Note that turning memory checking on may slow Wenix down a little bit, and that a handful of memory segments simply cannot be freed (page tables and stacks are common culprits).
     \item You can access the debug info functions mentioned above through the \texttt{kernel info} command.
     \item \texttt{kernel list} will tell you all the elements of a linked list if you used the macro list implementation.
     \item \texttt{kernel proc} will give you a list of all live processes.
@@ -88,10 +88,10 @@ If you need to know what exact instructions are being run or where exactly in yo
 
 \subsection{Using the QEMU monitor}
 
-Running the command \texttt{weenix -d qemu} will launch the QEMU monitor. From here, you have direct access to more system level information than you would in gdb. Notably, the \texttt{xp} command will let you examine physical addresses, much like how x will still allow you to examine virtual addresses. This can be useful in VM debugging to ensure the contents of a physical address are what they should be. Running the \texttt{help} command produces a full list of commands.
+Running the command \texttt{wenix -d qemu} will launch the QEMU monitor. From here, you have direct access to more system level information than you would in gdb. Notably, the \texttt{xp} command will let you examine physical addresses, much like how x will still allow you to examine virtual addresses. This can be useful in VM debugging to ensure the contents of a physical address are what they should be. Running the \texttt{help} command produces a full list of commands.
 
 \section{Advanced Debugging Techniques}
-Finally, there are some times when the approaches above are just not enough. These tips are for Weenix in particular, although they can easily be adapted for use in debugging many other kernels as well. These techniques will only be relevant when working on the virtual memory system of Weenix, since they are mainly for debugging problems in userland processes.
+Finally, there are some times when the approaches above are just not enough. These tips are for Wenix in particular, although they can easily be adapted for use in debugging many other kernels as well. These techniques will only be relevant when working on the virtual memory system of Wenix, since they are mainly for debugging problems in userland processes.
 
 \subsection{Debugging a Page Fault}
 
@@ -109,7 +109,7 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   6 .text         00000064  08048208  08048208  00000208  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE\end{verbatim}
-The relevant information that this gives us is the starting address of the text section, \texttt{0x08048208} (the \texttt{VMA} column). So, we can open up Weenix with \texttt{gdb} attached, and add in the relevant symbol file for our userland process.
+The relevant information that this gives us is the starting address of the text section, \texttt{0x08048208} (the \texttt{VMA} column). So, we can open up Wenix with \texttt{gdb} attached, and add in the relevant symbol file for our userland process.
 \begin{verbatim}
 Breakpoint 3, bootstrap (arg1=0, arg2=0x0) at main/kmain.c:121
 121     {
@@ -142,4 +142,4 @@ It is worth noting, however, that this does not prevent you from also putting br
 
 \subsection{\texttt{gdb} and \texttt{DYNAMIC}}
 
-With dynamic linking enabled, it becomes a step more difficult to debug userland processes from the kernel debugger, but certainly not impossible. The main issue is that there is a bunch more code in the \texttt{ld-weenix} shared library that you won't be able to debug unless you tell \texttt{gdb} to load the symbol file. The best way we know of to do this is to print out the memory map of the process you're trying to debug and make an educated guess about which region might correspond to \texttt{ld-weenix}. (It should be a shared region with execute permissions.) Then, load the debugging symbols starting at the address which corresponds to the beginning of that region.
+With dynamic linking enabled, it becomes a step more difficult to debug userland processes from the kernel debugger, but certainly not impossible. The main issue is that there is a bunch more code in the \texttt{ld-wenix} shared library that you won't be able to debug unless you tell \texttt{gdb} to load the symbol file. The best way we know of to do this is to print out the memory map of the process you're trying to debug and make an educated guess about which region might correspond to \texttt{ld-wenix}. (It should be a shared region with execute permissions.) Then, load the debugging symbols starting at the address which corresponds to the beginning of that region.

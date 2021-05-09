@@ -5,7 +5,7 @@
 #include "stdlib.h"
 
 #include "unistd.h"
-#include "weenix/trap.h"
+#include "wenix/trap.h"
 
 #include "dirent.h"
 

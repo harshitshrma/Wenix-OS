@@ -19,7 +19,7 @@
 struct blockdev_ops;
 
 /*
- * Represents a Weenix block device.
+ * Represents a Wenix block device.
  */
 typedef struct blockdev {
         /* Fields that should be initialized by drivers: */

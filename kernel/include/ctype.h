@@ -10,7 +10,7 @@
 #endif
 
 /* the original implementation for the following functions
- * was ported from the old Weenix on Xen architecture which
+ * was ported from the old Wenix on Xen architecture which
  * used the mini-os functions */
 /*
  * NOTE! This ctype does not handle EOF like the standard C

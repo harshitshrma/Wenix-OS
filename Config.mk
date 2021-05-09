@@ -1,8 +1,8 @@
-# This file is meant to change some aspect of how weenix is built or run.
+# This file is meant to change some aspect of how wenix is built or run.
 
 # Variables in this file should meet the following criteria:
-# * They change some behavior in the building or running of weenix that someone
-#   using weenix for educational purposes could reasonably want to change on a regular
+# * They change some behavior in the building or running of wenix that someone
+#   using wenix for educational purposes could reasonably want to change on a regular
 #   basis. Note that variables like CFLAGS are not defined here because they should
 #   generally not be changed.
 
@@ -21,18 +21,18 @@
 # Set whether or not to loop in kmain waiting for a gdb attach.  This is a hack
 # to get around the qemu/gdb bug (https://bugs.launchpad.net/qemu/+bug/526653).
 #
-# By default, GDBWAIT=0.  But if you want to debug weenix with gdb and the
-# "./weenix -n -d gdb" command is not working right for you, see the instruction
+# By default, GDBWAIT=0.  But if you want to debug wenix with gdb and the
+# "./wenix -n -d gdb" command is not working right for you, see the instruction
 # about setting GDBWAIT=1 here.
 #
 # If GDBWAIT=1 is used, kmain in kernel/main/kmain.c loops.  The commands in
 # init.gdb free qemu from that loop and the breakpoint at bootstrap is hit.
 #
-# Note that if GDBWAIT=1, weenix MUST BE invoked with the "./weenix -n -d gdb -w"
-# command!  If you invoke weenix with simply "./weenix -n", weenix will hang.
+# Note that if GDBWAIT=1, wenix MUST BE invoked with the "./wenix -n -d gdb -w"
+# command!  If you invoke wenix with simply "./wenix -n", wenix will hang.
 # Therefore, to run without gdb, you must have GDBWAIT=0.
 #
-# If GDBWAIT=0 and you invoke weenix with gdb (i.e., with "./weenix -n -d gdb"),
+# If GDBWAIT=0 and you invoke wenix with gdb (i.e., with "./wenix -n -d gdb"),
 # you should still be able to debug your kernel, but you will not be able to see
 # all the printout from dbg() statements.
 #
@@ -78,16 +78,16 @@
 #       DBG = error,temp,test,vnref,fref,vfs
 
 # Switches for non-required components. If you wish to try implementing
-# some extra features in Weenix, there are some pre-designed features
-# you can add. Turn on one of these flags and re-compile Weenix. Please
+# some extra features in Wenix, there are some pre-designed features
+# you can add. Turn on one of these flags and re-compile Wenix. Please
 # see the Wiki for details on what is provided by changing these flags
 # and what you will need to implement to complete them, of course you
 # are always free to implement your own features as well. Remember, though
 # these features are not "extra-credit" they are purely for academic
 # interest. The most important thing is that you have a working core
 # implementation, and that is what you will be graded on. If you decide
-# to implement extra features please make sure your core Weenix is working
-# first, and make sure to make a copy of your working Weenix before you
+# to implement extra features please make sure your core Wenix is working
+# first, and make sure to make a copy of your working Wenix before you
 # go breaking it, which we promise you will happen.
 
          SHADOWD=0 # shadow page cleanup
@@ -107,8 +107,8 @@
         GDB_TERM=xterm
         GDB_PORT=1234
 
-# The amount of physical memory which will be available to Weenix (in megabytes)
-# XXX MEMORY=256 is hardcoded in ./weenix right now -- this line here is
+# The amount of physical memory which will be available to Wenix (in megabytes)
+# XXX MEMORY=256 is hardcoded in ./wenix right now -- this line here is
 #     currently ignored
         MEMORY=256
 

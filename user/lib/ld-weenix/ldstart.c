@@ -18,7 +18,7 @@
 #include "sys/mman.h"
 
 #include "elf.h"
-#include "weenix/syscall.h"
+#include "wenix/syscall.h"
 
 #include "ldutil.h"
 #include "ldtypes.h"

@@ -326,7 +326,7 @@ void apic_init()
         apic->at_addr = pt_phys_perm_map(apic->at_addr, 1);
 
         /* Get the tables for the local APIC and IO APICS,
-         * Weenix currently only supports one of each, in order
+         * Wenix currently only supports one of each, in order
          * to enforce this a KASSERT will fail this if more than one
          * of each type is found */
         uint8_t off = sizeof(*apic);
@@ -336,7 +336,7 @@ void apic_init()
                 if (TYPE_LAPIC == type) {
                         KASSERT(apic_exists() && "Local APIC does not exist");
                         KASSERT(sizeof(struct lapic_table) == size);
-                        KASSERT(NULL == lapic && "Weenix only supports a single local APIC");
+                        KASSERT(NULL == lapic && "Wenix only supports a single local APIC");
                         lapic = (struct lapic_table *)(ptr + off);
                         dbgq(DBG_CORE, "LAPIC:\n");
                         dbgq(DBG_CORE, "   id:         0x%.2x\n", (uint32_t)lapic->at_apicid);
@@ -346,7 +346,7 @@ void apic_init()
                 } else if (TYPE_IOAPIC == type) {
                         KASSERT(apic_exists() && "IO APIC does not exist");
                         KASSERT(sizeof(struct ioapic_table) == size);
-                        KASSERT(NULL == ioapic && "Weenix only supports a single IO APIC");
+                        KASSERT(NULL == ioapic && "Wenix only supports a single IO APIC");
                         ioapic = (struct ioapic_table *)(ptr + off);
                         dbgq(DBG_CORE, "IOAPIC:\n");
                         dbgq(DBG_CORE, "   id:         0x%.2x\n", (uint32_t)ioapic->at_apicid);

@@ -4,7 +4,7 @@
 #include "types.h"
 
 /*
- * A Weenix "device identifier" is the concatenation of:
+ * A Wenix "device identifier" is the concatenation of:
  *     - a "driver number" or "device type" (major number)
  *     - a "device number" (minor number)
  *
@@ -12,7 +12,7 @@
  * independent. That is, you could have both a block device and a char device
  * with major 3, minor 5 (for example). They would be distinct.
  *
- * Weenix's device number allocation/assignment scheme is as follows:
+ * Wenix's device number allocation/assignment scheme is as follows:
  *
  *     - major 0 (byte or block), minor 0: reserved as an analogue of NULL
  *       for device id's

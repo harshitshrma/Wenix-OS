@@ -1,16 +1,16 @@
 import gdb
 
-import weenix
-import weenix.kmem
+import wenix
+import wenix.kmem
 
-class SlabCommand(weenix.Command):
+class SlabCommand(wenix.Command):
 
 	def __init__(self):
-		weenix.Command.__init__(self, "slab", gdb.COMMAND_DATA)
+		wenix.Command.__init__(self, "slab", gdb.COMMAND_DATA)
 
 	def _allocators(self):
 		l = list()
-		for alloc in weenix.kmem.allocators():
+		for alloc in wenix.kmem.allocators():
 			l.append(alloc)
 		return l
 
@@ -25,7 +25,7 @@ class SlabCommand(weenix.Command):
 		sizes.append("objsize")
 		counts.append("allocated")
 
-		for alloc in weenix.kmem.allocators():
+		for alloc in wenix.kmem.allocators():
 			names.append(alloc.name())
 			slabs.append(str(len(list(alloc.slabs()))))
 			sizes.append(str(alloc.size()))

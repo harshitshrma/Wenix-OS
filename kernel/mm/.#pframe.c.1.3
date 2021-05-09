@@ -31,7 +31,7 @@
  *
  * (1) Free pages do not contain identifiable data and are readily
  *     available for use. They are not pre-zeroed (at the moment, at least
- *     (but often times, OSs will have their equivalent of Weenix's
+ *     (but often times, OSs will have their equivalent of Wenix's
  *     idleproc (or another thread/process dedicated to this purpose) zero
  *     unzeroed pages on the free list when the system is otherwise idle)).
  *

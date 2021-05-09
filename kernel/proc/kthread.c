@@ -205,7 +205,7 @@ kthread_clone(kthread_t *thr)
 /*
  * The following functions will be useful if you choose to implement
  * multiple kernel threads per process. This is strongly discouraged
- * unless your weenix is perfect.
+ * unless your wenix is perfect.
  */
 #ifdef __MTP__
 int

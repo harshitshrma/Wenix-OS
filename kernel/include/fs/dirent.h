@@ -9,7 +9,7 @@
 #ifdef __KERNEL__
 #include "config.h"
 #else
-#include "weenix/config.h"
+#include "wenix/config.h"
 #endif
 
 typedef struct dirent {

@@ -3,18 +3,18 @@
 
 \section{Introduction}
 
-At this point, your Weenix contains a threading library, some thin wrappers around device drivers, and basic file system support with a caching layer. By the end of this assignment, Weenix will be a full operating system. With the addition of virtual memory, your kernel will start managing user address spaces, running user-level code, and servicing system calls. After completing this project, everything you did before will seem insignificant.
+At this point, your Wenix contains a threading library, some thin wrappers around device drivers, and basic file system support with a caching layer. By the end of this assignment, Wenix will be a full operating system. With the addition of virtual memory, your kernel will start managing user address spaces, running user-level code, and servicing system calls. After completing this project, everything you did before will seem insignificant.
 
 This assignment is substantial, and also very prone to difficult bugs. Before you begin, make sure the rest of your kernel is functioning exactly as you expect. You will undoubtedly uncover bugs in old code throughout the course of this assignment, but minimizing the number you find before you start will be helpful. Make sure to start early and ask questions frequently; it is very easy to get lost in this assignment.
 
 Remember to turn the \texttt{VM} project on in \texttt{Config.mk} and \texttt{make clean} your project before you try to run your changes.
 % TODO improve next paragraph
 
-Because VM bugs can spring up in code you wrote months ago, this is where you will probably find out whether or not your implementations of the previous assignments are up to par. We would like to point out that there are several Weenix- and OS-specific debugging tools and techniques in Appendix \ref{Debugging} which will be \textit{extremely} useful if you have not been using them so far.
+Because VM bugs can spring up in code you wrote months ago, this is where you will probably find out whether or not your implementations of the previous assignments are up to par. We would like to point out that there are several Wenix- and OS-specific debugging tools and techniques in Appendix \ref{Debugging} which will be \textit{extremely} useful if you have not been using them so far.
 
 \section{Virtual Memory Maps}
 
-The first thing you should do in this assignment is write the code for managing a process' virtual address space. The virtual address space for a process (also known as its ``memory map'') is stored as a linked list of virtual memory areas (also referred to as ``memory regions''), each of which correspond to some memory object which provides pages of memory to the process on demand. As you have likely already realized, this means that everything from files to disks can be mapped into the address space of Weenix processes, and it should now make even more sense why we used memory objects extensively in the last assignment instead of reading and writing directly to disk. Of course, some memory areas will not correspond to existing data (the stack and heap, for instance). We will explain how that works in the section on \wlink{anon}{anonymous objects}.
+The first thing you should do in this assignment is write the code for managing a process' virtual address space. The virtual address space for a process (also known as its ``memory map'') is stored as a linked list of virtual memory areas (also referred to as ``memory regions''), each of which correspond to some memory object which provides pages of memory to the process on demand. As you have likely already realized, this means that everything from files to disks can be mapped into the address space of Wenix processes, and it should now make even more sense why we used memory objects extensively in the last assignment instead of reading and writing directly to disk. Of course, some memory areas will not correspond to existing data (the stack and heap, for instance). We will explain how that works in the section on \wlink{anon}{anonymous objects}.
 
 In order to manage address spaces, you must maintain each process' list of virtual memory areas. Each memory region is essentially a range of virtual page numbers, a memory object, and the page offset into that memory object that the first page of the virtual memory area corresponds to. Make sure that you understand why these numbers are all stored at page resolution instead of byte (address) resolution. You must keep the areas sorted by the start of their virtual page ranges and ensure that no two ranges overlap with each other. There will be several edge cases (which are better documented in the code) where you will have to unmap a section of a virtual memory area, which could require splitting an area or truncating the beginning or end of an area.
 
@@ -24,13 +24,13 @@ While there is very little conceptually difficult code to write in this section 
 
 After your memory maps are working, you will need a way to actually load the data into memory when a process attempts to access it. This is done by the page fault handler. The page fault handler is triggered by a processor interrupt when a process attempts to access an address for which it has no lookup entry in the page table or the permissions on that entry do not allow the type of access that is being attempted.
 
-At this point in the project, any page faults that have occurred have resulted in a kernel panic. That is because Weenix does not support kernel-level page faults, meaning that the entire kernel address space must reside in memory at all times. This functionality is written into a wrapper for the page fault handler you will write which short-circuits kernel page faults. More details on how this function works can most easily be found in the code.
+At this point in the project, any page faults that have occurred have resulted in a kernel panic. That is because Wenix does not support kernel-level page faults, meaning that the entire kernel address space must reside in memory at all times. This functionality is written into a wrapper for the page fault handler you will write which short-circuits kernel page faults. More details on how this function works can most easily be found in the code.
 
 The combination of the page fault handler and the virtual memory maps should be enough to get a very simple page fault to occur in a userland program. At this point, you can set up a userland program to run from inside the \texttt{init} process by running \texttt{kernel\_execve()}, passing the path to any program on your (virtual) disk as an argument. Similar to the \texttt{exec()} system call, this will replace the memory map of the current process to set up another program to run, but it will be better than \texttt{exec()} in this case because the setup is done exclusively in kernel space, so it can be used before you have a fully functional userspace. When the program begins, it should cause a page fault to be generated. This is your first step towards having a functional userland.
 
-A simple implementation of the page fault handler will be enough to start with, but eventually this will be a relatively logic-heavy function. First, the page fault handler should search for the virtual memory area containing the address that was faulted on. Then, the permissions of this area should be checked against the flags variable that is passed to the handler, which tells the handler whether the attempted access is a read or a write. If the memory area containing the accessed page is not found or the permissions would make this access illegal, the current process is killed with an exit status of \texttt{EFAULT}. Of course, if Weenix supported UNIX signals, it would send a \texttt{SIGSEGV} signal instead.
+A simple implementation of the page fault handler will be enough to start with, but eventually this will be a relatively logic-heavy function. First, the page fault handler should search for the virtual memory area containing the address that was faulted on. Then, the permissions of this area should be checked against the flags variable that is passed to the handler, which tells the handler whether the attempted access is a read or a write. If the memory area containing the accessed page is not found or the permissions would make this access illegal, the current process is killed with an exit status of \texttt{EFAULT}. Of course, if Wenix supported UNIX signals, it would send a \texttt{SIGSEGV} signal instead.
 
-Once the virtual memory area is found, Weenix must search for the missing page and map it into the page table of the current process so that the access can be retried using the virtual address of the page that's being added and the physical address where it resides. Fetching the missing page will require a lot of help from the page frame caching system, namely for looking up the page and dirtying it if the access is a write. This, in turn, will rely on two new types of memory objects you will need to implement.
+Once the virtual memory area is found, Wenix must search for the missing page and map it into the page table of the current process so that the access can be retried using the virtual address of the page that's being added and the physical address where it resides. Fetching the missing page will require a lot of help from the page frame caching system, namely for looking up the page and dirtying it if the access is a write. This, in turn, will rely on two new types of memory objects you will need to implement.
 
 \subsection{The Memory Management Unit}
 
@@ -38,17 +38,17 @@ In order to map the virtual address to its corresponding page of memory, you wil
 
 \section{Memory Management}
 
-As you have implemented it currently, the caching layer of Weenix works exclusively for pages of files or disks that have been mapped into memory. You will extend it by creating memory objects which will provide two new types of memory which are not backed by any on-disk structures.
+As you have implemented it currently, the caching layer of Wenix works exclusively for pages of files or disks that have been mapped into memory. You will extend it by creating memory objects which will provide two new types of memory which are not backed by any on-disk structures.
 
 \subsection{Anonymous Objects} \label{anon}
 
 So far, you have used the memory objects of your block device and files to fill page frames as you needed data from disk, but it does not make sense to back some virtual memory areas, such as a process' stack, with data on disk. What you often want is objects which initialize pages by filling them with zeroes and pin their pages in memory as long as the process is using them. These are known as anonymous objects since they are not backed by any persistent data (which would have a filename associated with it). Anonymous objects are relatively simple to implement, so look for a better description of how they work in the code comments.
 
-Notably, anonymous objects cannot be paged out in Weenix. The designers chose not to implement this feature because memory pressure will rarely be an issue in your operating system, and implementing a swap space is not terribly interesting or vital to implement as a result.
+Notably, anonymous objects cannot be paged out in Wenix. The designers chose not to implement this feature because memory pressure will rarely be an issue in your operating system, and implementing a swap space is not terribly interesting or vital to implement as a result.
 
 \subsection{Shadow Objects}
 
-Anonymous objects are easy to implement, however you will also need a much more sophisticated form of memory object called a shadow object to implement \texttt{fork()}. These will be used to implement copy-on-write for privately-mapped blocks that are accessed after forking. Because of how involved shadow objects must be, you should refer to lecture slides or the book for more general information about how and why they are used. The rest of this section will only cover how to implement them in Weenix.
+Anonymous objects are easy to implement, however you will also need a much more sophisticated form of memory object called a shadow object to implement \texttt{fork()}. These will be used to implement copy-on-write for privately-mapped blocks that are accessed after forking. Because of how involved shadow objects must be, you should refer to lecture slides or the book for more general information about how and why they are used. The rest of this section will only cover how to implement them in Wenix.
 
 To implement shadow objects, it will be extremely helpful to understand how the methods of memory objects are called during a page lookup or dirty operation. If you don't remember this well from the last assignment, we recommend that you go back and either re-read the relevant sections of the last assignment or search through the code paths in question and draw a graph showing what functions in the page frame system call what functions in the related memory objects.
 
@@ -62,7 +62,7 @@ The second method would be to collapse shadow chains during \texttt{fork()}. Thi
 
 \section{System Calls}
 
-System calls are the only way user processes can communicate with the Weenix kernel directly. The way that system calls are generated from user space is by generating a software interrupt (using the x86 \texttt{int} instruction) with the arguments to the system call stored in the registers or on the stack. This causes an interrupt in the kernel, where the number in an agreed-upon register designates which system call is being used, and then the corresponding system call function is actually called to handle the request after the arguments have been parsed out of their registers. Most of the system calls have already been written for you, however, in order to give you some understanding of the process involved, you will need to write a few yourself.
+System calls are the only way user processes can communicate with the Wenix kernel directly. The way that system calls are generated from user space is by generating a software interrupt (using the x86 \texttt{int} instruction) with the arguments to the system call stored in the registers or on the stack. This causes an interrupt in the kernel, where the number in an agreed-upon register designates which system call is being used, and then the corresponding system call function is actually called to handle the request after the arguments have been parsed out of their registers. Most of the system calls have already been written for you, however, in order to give you some understanding of the process involved, you will need to write a few yourself.
 
 \subsection{Kernel System Call Interface}
 
@@ -86,7 +86,7 @@ At this point, it will be useful to look at the \wlink{Debugging}{debugging} app
 
 After you get some initial test programs running, you can start to think about implementing a variety of VM-related system calls. For the functions in this section, we recommend that you check out the documentation in the \texttt{man} pages for more information.
 
-\texttt{mmap()} and \texttt{munmap()} are the most simple and obvious of the functions in this category. They allow user processes to map files into memory, create private or shared memory regions, and remove areas of their address space. The majority of these functions will end up being error-checking, since you wrote the main logic for them in the virtual memory map code.  Note that the Weenix memtests expect you to use the \texttt{VMMAP\_DIR\_HILO} flag.
+\texttt{mmap()} and \texttt{munmap()} are the most simple and obvious of the functions in this category. They allow user processes to map files into memory, create private or shared memory regions, and remove areas of their address space. The majority of these functions will end up being error-checking, since you wrote the main logic for them in the virtual memory map code.  Note that the Wenix memtests expect you to use the \texttt{VMMAP\_DIR\_HILO} flag.
 
 \texttt{brk()} is similar in conceptual difficulty. Calling \texttt{brk()} changes the length of the memory region acting as the heap, but the pointer passed as an argument to \texttt{brk()} is not required to lie on a page boundary, and the beginning of the heap sometimes starts halfway through the last page of another memory region. This means that the edge cases for \texttt{brk()} can be a bit annoying, but there's nothing conceptually difficult to grasp here. There are some robust user-level tests for much of this functionality, so rather than spending a lot of time getting it right before testing, we recommend starting with something naive and gradually fixing it to pass the tests after you can run them in userland.
 
@@ -128,15 +128,15 @@ Note that a simpler, less correct implementation of \texttt{fork()} can function
 
 \section{Odds and Ends}
 
-Finally, there are a number of other functions which you might remember seeing in earlier assignments spread throughout the kernel which you need to find and either write or update. These functions are all fairly small, but if you miss one, some things will break. Two examples are \texttt{special\_file\_mmap()} and \texttt{proc\_kill\_all()}. Once you get the last of these finished, you should be able to test your kernel with any binary file you find on the Weenix file system.
+Finally, there are a number of other functions which you might remember seeing in earlier assignments spread throughout the kernel which you need to find and either write or update. These functions are all fairly small, but if you miss one, some things will break. Two examples are \texttt{special\_file\_mmap()} and \texttt{proc\_kill\_all()}. Once you get the last of these finished, you should be able to test your kernel with any binary file you find on the Wenix file system.
 
 \section{Testing}
 
-Testing your code at this point becomes rather difficult, since you must be able to create data and text in user land and execute it. This is an order of magnitude more difficult than creating kernel-mode threads as you have in past assignments. Thankfully most of the gory details have been taken care of for you (take a look at \texttt{kernel/api/elf32.c} and \texttt{user/ld-weenix/} if you are a masochist).
+Testing your code at this point becomes rather difficult, since you must be able to create data and text in user land and execute it. This is an order of magnitude more difficult than creating kernel-mode threads as you have in past assignments. Thankfully most of the gory details have been taken care of for you (take a look at \texttt{kernel/api/elf32.c} and \texttt{user/ld-wenix/} if you are a masochist).
 
 \subsection{Userland Tests}
 
-Once you have functioning userland execution and a working \texttt{fork()} function, you are ready to complete your Weenix system by running the userland binaries we provide for you. All you need to do is call \texttt{kernel\_execve()} in your init process. You should execute the binary \texttt{/sbin/init}, which should start 3 shells (one in each terminal window). These shells will allow you to execute any of the provided binaries (roughly in order of difficulty):
+Once you have functioning userland execution and a working \texttt{fork()} function, you are ready to complete your Wenix system by running the userland binaries we provide for you. All you need to do is call \texttt{kernel\_execve()} in your init process. You should execute the binary \texttt{/sbin/init}, which should start 3 shells (one in each terminal window). These shells will allow you to execute any of the provided binaries (roughly in order of difficulty):
 \begin{itemize}
     \item \texttt{/usr/bin/segfault} - Even simpler than hello, this should just segfault on address \texttt{0x0}. Good if you're having a lot of trouble getting hello to run.
     \item \texttt{/usr/bin/hello} - A simple ``Hello world!'' test. Getting this to execute properly should be a big step in VM.
@@ -187,7 +187,7 @@ In addition to just having commands which work individually, you should be able 
     \item \texttt{forkbomb} and then \texttt{eatmem}
 \end{itemize}
 
-An easy way to make these tests harder is to check the kernel memory allocators for any leaks. See the \wlink{Debugging}{debugging} appendix to see how to do this. You may also want to test what happens when Weenix runs out of disk data blocks. To do this, set the \texttt{DISK\_BLOCKS} variable to 2048 if it is not already, and then re-run Weenix with a fresh disk and execute the commands below.
+An easy way to make these tests harder is to check the kernel memory allocators for any leaks. See the \wlink{Debugging}{debugging} appendix to see how to do this. You may also want to test what happens when Wenix runs out of disk data blocks. To do this, set the \texttt{DISK\_BLOCKS} variable to 2048 if it is not already, and then re-run Wenix with a fresh disk and execute the commands below.
 
 \begin{itemize}
     \item \texttt{cat hamlet >> hamlet} (this should reach the maximum file size and then exit)
@@ -198,10 +198,10 @@ An easy way to make these tests harder is to check the kernel memory allocators 
 
 \subsection{Dynamic Linking}
 
-Once you feel everything is in good shape, enable the \texttt{DYNAMIC} variable and recompile the project from scratch. This will cause your userland libraries to be dynamically linked, which puts much more stress on your VM (especially \texttt{mmap()} code). This essentially adds another layer of indirection between the executable being run and the library calls it's attempting to run, where \texttt{ld-weenix} can link the library calls that are used into the original binary at runtime. Unfortunately, this also makes it even more difficult to debug what the user process is doing; if you are interested in setting breakpoints in the user process with dynamic linking, check out the \wlink{Debugging}{debugging} appendix for more information.
+Once you feel everything is in good shape, enable the \texttt{DYNAMIC} variable and recompile the project from scratch. This will cause your userland libraries to be dynamically linked, which puts much more stress on your VM (especially \texttt{mmap()} code). This essentially adds another layer of indirection between the executable being run and the library calls it's attempting to run, where \texttt{ld-wenix} can link the library calls that are used into the original binary at runtime. Unfortunately, this also makes it even more difficult to debug what the user process is doing; if you are interested in setting breakpoints in the user process with dynamic linking, check out the \wlink{Debugging}{debugging} appendix for more information.
 
 Turning dynamic linking on will make the above tests even more thorough. For instance, the test using \texttt{forkbomb} and \texttt{eatmem} simultaneously is notoriously hard to get right in the presence of dynamic linking - a phantom bug might cause your \texttt{pageoutd} to thrash back and forth between two pages if you're not careful.
 
 \section{Conclusion}
 
-We hope you've enjoyed working on Weenix and that you learned a lot. Good luck finishing your project, and don't forget to read the \wlink{Debugging}{debugging} appendix if you run into problems or need more ideas about where to look!
+We hope you've enjoyed working on Wenix and that you learned a lot. Good luck finishing your project, and don't forget to read the \wlink{Debugging}{debugging} appendix if you run into problems or need more ideas about where to look!

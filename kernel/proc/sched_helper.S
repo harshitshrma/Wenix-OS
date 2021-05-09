@@ -3791,7 +3791,7 @@ __func__.1399:
 .LASF579:
 	.string	"p_pid"
 .LASF622:
-	.string	"/home/harshit/weenix-assignment-3.2.0/weenix/kernel"
+	.string	"/home/harshit/wenix-assignment-3.2.0/wenix/kernel"
 .LASF27:
 	.string	"__BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__"
 .LASF172:

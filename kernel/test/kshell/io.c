@@ -31,7 +31,7 @@ int kshell_write(kshell_t *ksh, const void *buf, size_t nbytes)
                 /*
                  * In general, do_write does not necessarily have to
                  * write the entire buffer. However, with our
-                 * implementation of Weenix and S5FS, this should
+                 * implementation of Wenix and S5FS, this should
                  * ALWAYS work. If it doesn't, it means that something
                  * is wrong.
                  *

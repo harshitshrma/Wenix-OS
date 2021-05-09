@@ -1541,7 +1541,7 @@ int main(int argc, char *argv[], char *envp[])
 
         my_envp = envp;
 
-        snprintf(prompt, 63, "weenix -> ");
+        snprintf(prompt, 63, "wenix -> ");
 
         fprintf(stdout, "%s", prompt);
         fflush(NULL);

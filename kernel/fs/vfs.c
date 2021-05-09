@@ -36,7 +36,7 @@ list_t mounted_fs_list;
 
 /*
  * Implementing this function is not required and strongly discouraged unless
- * you are absolutley sure your Weenix is perfect.
+ * you are absolutley sure your Wenix is perfect.
  *
  * The purpose of this function is to set up the pointers between the file
  * system struct and the vnode of the mount point. Remember to watch your
@@ -63,7 +63,7 @@ vfs_mount(struct vnode *mtpt, fs_t *fs)
 
 /*
  * Implementing this function is not required and strongly discouraged unless
- * you are absolutley sure your Weenix is perfect.
+ * you are absolutley sure your Wenix is perfect.
  *
  * The purpose of this function is to undo the setup done in vfs_mount(). Also
  * you should call the underlying file system's umount() function. Make sure
@@ -90,7 +90,7 @@ vfs_umount(fs_t *fs)
  *         - mounts the root (and only) filesystem
  *             - create an fs_t, fs, to represent the root filesystem
  *             - initialize fs->fs_type to VFS_ROOTFS_TYPE and, if
- *               appropriate (see include/weenix/config.h), fs->fs_dev to
+ *               appropriate (see include/wenix/config.h), fs->fs_dev to
  *               VFS_ROOTFS_DEV.
  *
  *             - Use 'mountfunc(...)' to attempt to identify and call the

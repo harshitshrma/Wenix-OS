@@ -47,7 +47,7 @@ fork_setup_stack(const regs_t *regs, void *kstack)
 /*
  * The implementation of fork(2). Once this works,
  * you're practically home free. This is what the
- * entirety of Weenix has been leading up to.
+ * entirety of Wenix has been leading up to.
  * Go forth and conquer.
  */
 int

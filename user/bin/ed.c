@@ -1,7 +1,7 @@
 /*
  * ed is the standard text editor.
  *
- * I think that Keith was the one who ported ed to weenix.  Thanks Keith.
+ * I think that Keith was the one who ported ed to wenix.  Thanks Keith.
  * Note: dap also helped in 2007, but it still doesn't work.
  * Working version added in 2010.
  */

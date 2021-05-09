@@ -73,7 +73,7 @@ int faber_sparse_test(kshell_t *ksh, int argc, char **argv) {
 static char block[S5_BLOCK_SIZE];
 
 /* Create as large a file as the file system structures will allow.  The disk
- * that comes with weenix will not support a file this size, so it will fail in
+ * that comes with wenix will not support a file this size, so it will fail in
  * the do_write calls.
  */
 int faber_space_test(kshell_t *ksh, int argc, char **argv) {

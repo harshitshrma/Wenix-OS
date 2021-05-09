@@ -1,7 +1,7 @@
 import gdb
-import weenix
+import wenix
 
-import weenix.list
+import wenix.list
 
 PAGE_SIZE = 4096
 
@@ -97,11 +97,11 @@ def pagesize():
 
 def freepages():
 	freepages = dict()
-	for pagegroup in weenix.list.load("pagegroup_list", "struct pagegroup", "pg_link"):
+	for pagegroup in wenix.list.load("pagegroup_list", "struct pagegroup", "pg_link"):
 		freelist = pagegroup.item()["pg_freelist"]
 		for order in xrange(freelist.type.sizeof // freelist.type.target().sizeof):
 			psize = (1 << order) * PAGE_SIZE
-			count = len(weenix.list.load(freelist[order]))
+			count = len(wenix.list.load(freelist[order]))
 			if (order in freepages):
 				freepages[order] += count
 			else:

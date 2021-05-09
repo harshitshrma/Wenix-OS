@@ -52,7 +52,7 @@ lib/%.o: lib/%.S
 
 LDFLAGS := -m elf_i386 -z nodefaultlib -Llib/
 
-# - there are 3 libraries: libc, ld-weenix, libtest
+# - there are 3 libraries: libc, ld-wenix, libtest
 # - each library is built from the set of object files contained in its
 #   directory; this set is generated from the list of sources by replacing
 #   the .c suffix (or .S suffix) with a .o suffix
@@ -67,7 +67,7 @@ LIBC_OBJECTS := $(addsuffix .o,$(basename $(LIBC_SOURCES)))
 lib/libc.so: $(LIBC_OBJECTS)
 	@ echo "  Linking for \"user/$@\"..."
 	@ $(LD) -o $@ $^ $(LDFLAGS) -shared -soname=/lib/libc.so \
---dynamic-linker /lib/ld-weenix.so
+--dynamic-linker /lib/ld-wenix.so
 
 lib/libc.a: $(LIBC_OBJECTS)
 	@ echo "  Creating \"user/$@\"..."
@@ -86,17 +86,17 @@ lib/libtest.a: $(LIBTEST_OBJECTS)
 	@ echo "  Creating \"user/$@\"..."
 	@ $(AR) crs $@ $^
 
-# 3. ld-weenix
+# 3. ld-wenix
 
-LDWEENIX_SOURCES := $(wildcard lib/ld-weenix/*.[cS])
-LDWEENIX_OBJECTS := $(addsuffix .o,$(basename $(LDWEENIX_SOURCES)))
+LDWenix_SOURCES := $(wildcard lib/ld-wenix/*.[cS])
+LDWenix_OBJECTS := $(addsuffix .o,$(basename $(LDWenix_SOURCES)))
 
-lib/ld-weenix.so: $(LDWEENIX_OBJECTS) lib/libc.a
+lib/ld-wenix.so: $(LDWenix_OBJECTS) lib/libc.a
 	@ echo "  Linking for \"user/$@\"..."
-	@ $(LD) -o $@ $(LDWEENIX_OBJECTS) $(LDFLAGS) -shared \
--soname=/lib/ld-weenix.so -Bsymbolic -e _bootstrap -static -lc
+	@ $(LD) -o $@ $(LDWenix_OBJECTS) $(LDFLAGS) -shared \
+-soname=/lib/ld-wenix.so -Bsymbolic -e _bootstrap -static -lc
 
-LIB_OBJECTS := $(LIBC_OBJECTS) $(LIBTEST_OBJECTS) $(LDWEENIX_OBJECTS)
+LIB_OBJECTS := $(LIBC_OBJECTS) $(LIBTEST_OBJECTS) $(LDWenix_OBJECTS)
 
 ########
 # link step for executables
@@ -119,7 +119,7 @@ usr/bin/%.exec: usr/bin/tests/%.o lib/libc.a lib/libc/entry.o lib/libtest.a
 else
 usr/bin/%.exec: usr/bin/tests/%.o lib/libc.so lib/libtest.so
 	@ echo "  Linking for \"user/$@\" (dynamic)..."
-	@ $(LD) -o $@ $< $(LDFLAGS) -e main --dynamic-linker /lib/ld-weenix.so \
+	@ $(LD) -o $@ $< $(LDFLAGS) -e main --dynamic-linker /lib/ld-wenix.so \
 -lc -ltest
 endif
 
@@ -133,7 +133,7 @@ ifeq ($(DYNAMIC),0)
 else
 %.exec: %.o lib/libc.so
 	@ echo "  Linking for \"user/$@\" (dynamic)..."
-	@ $(LD) -o $@ $< $(LDFLAGS) -e main --dynamic-linker /lib/ld-weenix.so \
+	@ $(LD) -o $@ $< $(LDFLAGS) -e main --dynamic-linker /lib/ld-wenix.so \
 -lc
 endif
 
@@ -147,7 +147,7 @@ endif
 
 # TODO also create make /tmp directory (some userspace test expects it)
 BASE_TARGETS := README hamlet test/stuff
-LIB_TARGETS := lib/ld-weenix.so lib/libc.a lib/libc.so lib/libtest.a \
+LIB_TARGETS := lib/ld-wenix.so lib/libc.a lib/libc.so lib/libtest.a \
 lib/libtest.so
 EXEC_TARGETS := bin/ed bin/ls bin/sh bin/uname bin/hd bin/stat \
 sbin/halt sbin/init \

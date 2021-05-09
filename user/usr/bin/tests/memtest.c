@@ -11,7 +11,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <weenix/syscall.h>
+#include <wenix/syscall.h>
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <stdio.h>

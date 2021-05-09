@@ -661,7 +661,7 @@ static int sys_pipe(int arg[2])
 
 static int sys_uname(struct utsname *arg)
 {
-        static const char sysname[] = "Weenix";
+        static const char sysname[] = "Wenix";
         static const char release[] = "1.2";
         /* Version = last compilation time */
         static const char version[] = "#1 " __DATE__ " " __TIME__;
